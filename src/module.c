@@ -60,6 +60,7 @@ int _RegisterDataTypes(RedisModuleCtx *ctx) {
 	return REDISMODULE_OK;
 }
 
+__attribute__((visibility("default")))
 int RedisModule_OnLoad(RedisModuleCtx *ctx, RedisModuleString **argv, int argc) {
 	/* TODO: when module unloads call GrB_finalize. */
 	assert(GrB_init(GrB_NONBLOCKING) == GrB_SUCCESS);
