@@ -348,6 +348,25 @@ void FilterTree_DeMorgan(FT_FilterNode **root) {
 	_FilterTree_DeMorgan(root, 0);
 }
 
+
+static bool _FilterTree_Reduce(FT_FilterNode **root) {
+	if(*root == NULL) return true;
+	if((*root)->t == FT_N_EXP) {
+
+	}
+	if((*root)->t == FT_N_COND) {
+
+	}
+	if((*root)->t == FT_N_PRED) {
+
+	}
+}
+
+
+void FilterTree_Reduce(FT_FilterNode **root) {
+	_FilterTree_Reduce(root);
+}
+
 void _FilterTree_Print(const FT_FilterNode *root, int ident) {
 	char *exp = NULL;
 	char *left = NULL;

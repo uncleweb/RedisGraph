@@ -108,6 +108,9 @@ Vector *FilterTree_SubTrees(const FT_FilterNode *root);
 /* Remove NOT nodes by applying DeMorgan laws */
 void FilterTree_DeMorgan(FT_FilterNode **root);
 
+/* Try to reduce a filter tree to a constant expression (true or false) */
+void FilterTree_Reduce(FT_FilterNode **root);
+
 /* Prints tree. */
 void FilterTree_Print(const FT_FilterNode *root);
 

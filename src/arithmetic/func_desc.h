@@ -15,14 +15,32 @@
 typedef SIValue(*AR_Func)(SIValue *argv, int argc);
 
 typedef struct {
-	uint argc;          // Number of arguments function expects
-	AR_Func func;       // Function pointer.
-	SIType *types;      // Types of arguments.
-	const char *name;   // Function name.
-    bool reducible;     // Can be reduced using static evaluation.
+	SIValue zeroElement;    // A binary operation zero element.
+	bool nullable;          // Indicates if the value can be null;
+} AR_ZeroValue;
+
+/* Creates a new AR_DefaultZeroValue struct with the given zero element */
+AR_ZeroValue *AR_ZeroValueNew(SIValue zeroElement, bool nullable);
+
+typedef struct {
+	AR_ZeroValue *lhsDefaultZeroValue;   // Binary operator lhs zero and default values.
+	AR_ZeroValue *rhsDefaultZeroValue;   // Binary operator rhs zero and default values.
+} AR_BinaryOpZeroValues;
+
+/* Creates a new AR_BinaryOpDefaultZeroValues struct with the given lhs and rhs zero and default values */
+AR_BinaryOpZeroValues *AR_BinaryOpZeroValuesNew(AR_ZeroValue *lhs, AR_ZeroValue *rhs);
+
+typedef struct {
+	uint argc;                          // Number of arguments function expects
+	AR_Func func;                       // Function pointer.
+	SIType *types;                      // Types of arguments.
+	const char *name;                   // Function name.
+	bool reducible;                     // Can be reduced using static evaluation.
+	AR_BinaryOpZeroValues *zeroValues;  // Binary operator zero values and its default values.
 } AR_FuncDesc;
 
-AR_FuncDesc *AR_FuncDescNew(const char *name, AR_Func func, uint argc, SIType *types, bool reducible);
+AR_FuncDesc *AR_FuncDescNew(const char *name, AR_Func func, uint argc, SIType *types,
+							bool reducible, AR_BinaryOpZeroValues *zeroValues);
 
 /* Register arithmetic function to repository. */
 void AR_RegFunc(AR_FuncDesc *func);

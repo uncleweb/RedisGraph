@@ -26,14 +26,31 @@ static void inline _toLower(const char *str, char *lower, short *lower_len) {
 	lower[i] = 0;
 }
 
+AR_ZeroValue *AR_ZeroValueNew(SIValue zeroElement, bool nullable) {
+	AR_ZeroValue *zeroValue = rm_malloc(sizeof(AR_ZeroValue));
+	zeroValue->zeroElement = zeroElement;
+	zeroValue->nullable = nullable;
+	return zeroValue;
+}
+
+
+AR_BinaryOpZeroValues *AR_BinaryOpDefaultZeroValuesNew(AR_ZeroValue *lhs,
+													   AR_ZeroValue *rhs) {
+	AR_BinaryOpZeroValues *zeroValues = rm_malloc(sizeof(AR_BinaryOpZeroValues));
+	zeroValues->lhsDefaultZeroValue = lhs;
+	zeroValues->rhsDefaultZeroValue = rhs;
+	return zeroValues;
+}
+
 AR_FuncDesc *AR_FuncDescNew(const char *name, AR_Func func, uint argc, SIType *types,
-							bool reducible) {
+							bool reducible, AR_BinaryOpZeroValues *zeroValues) {
 	AR_FuncDesc *desc = rm_malloc(sizeof(AR_FuncDesc));
 	desc->name = name;
 	desc->func = func;
 	desc->argc = argc;
 	desc->types = types;
 	desc->reducible = reducible;
+	desc->zeroValues = zeroValues;
 	return desc;
 }
 
